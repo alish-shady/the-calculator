@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <link href="./styles/output.css" rel="stylesheet" />
+    <style>
+      h1 {
+        font-weight: bold;
+        color: rgb(255, 247, 15);
+        text-shadow: 1px 2px 1px rgb(255, 87, 87);
+      }
+      .noselect {
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+      }
+      .w-16 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 6px;
+        font-size: 20px;
+      }
+      div.w-16:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      div.w-16:active {
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body class="bg-indigo-600 w-full">
+    <div class="flex justify-center m-5 noselect">
+      <h1 class="text-4xl drop-shadow-lg">The Best Calculator You Could Find On The Planet</h1>
+    </div>
+    <main class="w-full flex justify-center mt-10 noselect">
+      <div class="w-3/12 bg-purple-950 rounded-lg">
+        <input
+          class="w-full h-20 --nofocus rounded-lg bg-purple-950 text-4xl px-6 text-white"
+          dir="rtl"
+          type="text"
+        />
+        <div class="w-full flex justify-center flex-wrap">
+          <div class="w-16 h-16 rounded-full bg-purple-600" id="AC">AC</div>
+          <div class="w-16 h-16 rounded-full mx-2 bg-purple-600" id="+/-">+/-</div>
+          <div class="w-16 h-16 rounded-full mr-2 bg-purple-600" id="%">%</div>
+          <div class="w-16 h-16 rounded-full bg-amber-500" id="/">/</div>
+          <div class="w-16 h-16 rounded-full bg-violet-200" id="7">7</div>
+          <div class="w-16 h-16 rounded-full mx-2 bg-violet-200" id="8">8</div>
+          <div class="w-16 h-16 rounded-full mr-2 bg-violet-200 hover:bg-red-500" id="9">9</div>
+          <div class="w-16 h-16 rounded-full bg-amber-500" id="X">X</div>
+          <div class="w-16 h-16 rounded-full bg-violet-200" id="4">4</div>
+          <div class="w-16 h-16 rounded-full mx-2 bg-violet-200" id="5">5</div>
+          <div class="w-16 h-16 rounded-full mr-2 bg-violet-200" id="6">6</div>
+          <div class="w-16 h-16 rounded-full bg-amber-500" id="-">-</div>
+          <div class="w-16 h-16 rounded-full bg-violet-200" id="1">1</div>
+          <div class="w-16 h-16 rounded-full mx-2 bg-violet-200" id="2">2</div>
+          <div class="w-16 h-16 rounded-full mr-2 bg-violet-200" id="3">3</div>
+          <div class="w-16 h-16 rounded-full bg-amber-500" id="+">+</div>
+          <div class="w-16 h-16 rounded-full mb-4 bg-violet-200" id="CE">CE</div>
+          <div class="w-16 h-16 rounded-full mb-4 mx-2 bg-violet-200" id="0">0</div>
+          <div class="w-16 h-16 rounded-full mb-4 mr-2 bg-violet-200" id=".">.</div>
+          <div class="w-16 h-16 rounded-full mb-4 bg-amber-500" id="=">=</div>
+        </div>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
