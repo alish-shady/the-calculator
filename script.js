@@ -65,6 +65,29 @@ function decimalSeparator(number) {
     return number;
   }
 }
+function lengthChecker() {
+  if (String(output).length > 12 && String(output).includes(".")) {
+    console.log(String(output));
+    textBox.value =
+      output < 0
+        ? `${decimalSeparator(
+            Math.abs(
+              output.toFixed(12 - String(output).slice(0, String(output).indexOf(".") + 1).length)
+            )
+          )}-`
+        : decimalSeparator(
+            output.toFixed(12 - String(output).slice(0, String(output).indexOf(".") + 1).length)
+          );
+    currentValue = output;
+    return true;
+  }
+  if (String(output).length > 12 && !String(output).includes(".")) {
+    textBox.value = "sorry too long";
+    output = currentValue = "";
+    return true;
+  }
+  return false;
+}
 document.body.addEventListener("focusin", (e) => {
   if (e.target.classList.contains("--nofocus")) {
     e.relatedTarget ? e.relatedTarget.focus() : e.target.blur();
@@ -72,19 +95,12 @@ document.body.addEventListener("focusin", (e) => {
 });
 for (let i = 0; i <= 9; i++) {
   document.getElementById(`${i}`).addEventListener("click", function (e) {
-    if (
-      Number(output) == textBox.value.replaceAll(",", "") ||
-      Number(String(output).slice(0, -1)) == textBox.value.replaceAll(",", "")
-    )
-      textBox.value = "";
-    // prettier-ignore
-    if (
-            (textBox.value.endsWith("-")) && textBox.value != "-" &&
-             ((Number(currentValue) == 0 - Number(textBox.value.replaceAll(",", "").slice(0, -1))) ||
-            Number(currentValue.slice(0, -1)) == 0 - Number(textBox.value.replaceAll(",", "").slice(0, -1)))
-          )
-            textBox.value = "";
-
+    // if (
+    //         (textBox.value.endsWith("-"))  &&
+    //          ((Number(currentValue) == 0 - Number(textBox.value.replaceAll(",", "").slice(0, -1))) ||
+    //         Number(currentValue.slice(0, -1)) == 0 - Number(textBox.value.replaceAll(",", "").slice(0, -1)))
+    //       )
+    //         textBox.value = "";
     if (textBox.value.replaceAll(",", "").length < 13) textBox.value += e.target.id;
   });
 }
@@ -115,16 +131,11 @@ document.getElementById("+/-").addEventListener("click", function () {
 document.getElementById("+").addEventListener("click", function () {
   if (String(currentValue).endsWith("+")) {
     output = Number(currentValue.slice(0, -1)) + Number(textBox.value.replaceAll(",", ""));
-    if (String(output).length > 12) {
-      textBox.value = "sorry too long";
-      output = "";
-      currentValue = "";
-    } else {
-      if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
-      else textBox.value = decimalSeparator(output);
-      currentValue = output;
-      currentValue += "+";
-    }
+    if (lengthChecker()) return;
+    if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
+    else textBox.value = decimalSeparator(output);
+    currentValue = output;
+    currentValue += "+";
   } else {
     if (
       !currentValue ||
@@ -147,51 +158,38 @@ document.getElementById("+").addEventListener("click", function () {
 document.getElementById("-").addEventListener("click", function () {
   if (String(currentValue).endsWith("_")) {
     output = Number(currentValue.slice(0, -1)) - Number(textBox.value.replaceAll(",", ""));
-    if (String(output).length > 12) {
-      textBox.value = "sorry too long";
-      output = "";
-      currentValue = "";
-    } else {
-      if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
-      else textBox.value = decimalSeparator(output);
-      currentValue = output;
-      currentValue += "_";
-    }
+    if (lengthChecker()) return;
+    if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
+    else textBox.value = decimalSeparator(output);
+    currentValue = output;
+    currentValue += "_";
   } else {
-    if (textBox.value == "") textBox.value = "-";
-    else {
-      if (
-        !currentValue ||
-        negate ||
-        output ==
-          (textBox.value.endsWith("-")
-            ? String(0 - Number(textBox.value.replaceAll(",", "").slice(0, -1)))
-            : textBox.value.replaceAll(",", ""))
-      ) {
-        currentValue = textBox.value.endsWith("-")
+    if (
+      !currentValue ||
+      negate ||
+      output ==
+        (textBox.value.endsWith("-")
           ? String(0 - Number(textBox.value.replaceAll(",", "").slice(0, -1)))
-          : textBox.value.replaceAll(",", "");
-        textBox.value = "";
-      } else {
-        calculation(String(currentValue).slice(-1));
-      }
-      currentValue += "_";
+          : textBox.value.replaceAll(",", ""))
+    ) {
+      currentValue = textBox.value.endsWith("-")
+        ? String(0 - Number(textBox.value.replaceAll(",", "").slice(0, -1)))
+        : textBox.value.replaceAll(",", "");
+      textBox.value = "";
+    } else {
+      calculation(String(currentValue).slice(-1));
     }
+    currentValue += "_";
   }
 });
 document.getElementById("X").addEventListener("click", function () {
   if (String(currentValue).endsWith("x")) {
     output = Number(currentValue.slice(0, -1)) * Number(textBox.value.replaceAll(",", ""));
-    if (String(output).length > 12) {
-      textBox.value = "sorry too long";
-      output = "";
-      currentValue = "";
-    } else {
-      if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
-      else textBox.value = decimalSeparator(output);
-      currentValue = output;
-      currentValue += "x";
-    }
+    if (lengthChecker()) return;
+    if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
+    else textBox.value = decimalSeparator(output);
+    currentValue = output;
+    currentValue += "x";
   } else {
     if (
       !currentValue ||
@@ -214,16 +212,11 @@ document.getElementById("X").addEventListener("click", function () {
 document.getElementById("/").addEventListener("click", function () {
   if (String(currentValue).endsWith("/")) {
     output = Number(currentValue.slice(0, -1)) / Number(textBox.value.replaceAll(",", ""));
-    if (String(output).length > 12) {
-      textBox.value = "sorry too long";
-      output = "";
-      currentValue = "";
-    } else {
-      if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
-      else textBox.value = decimalSeparator(output);
-      currentValue = output;
-      currentValue += "/";
-    }
+    if (lengthChecker()) return;
+    if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
+    else textBox.value = decimalSeparator(output);
+    currentValue = output;
+    currentValue += "/";
   } else {
     if (
       !currentValue ||
@@ -244,48 +237,22 @@ document.getElementById("/").addEventListener("click", function () {
   }
 });
 document.getElementById("=").addEventListener("click", function () {
-  if (String(currentValue).endsWith("+")) {
-    output = Number(currentValue.slice(0, -1)) + Number(textBox.value.replaceAll(",", ""));
-    if (String(output).length > 12) {
-      textBox.value = "sorry too long";
-      output = "";
-      currentValue = "";
-    } else {
-      if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
-      else textBox.value = decimalSeparator(output);
-      currentValue = output;
-    }
-  } else if (String(currentValue).endsWith("_")) {
-    output = Number(currentValue.slice(0, -1)) - Number(textBox.value.replaceAll(",", ""));
-    if (String(output).length > 12) {
-      textBox.value = "sorry too long";
-      output = "";
-      currentValue = "";
-    } else {
-      if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
-      else textBox.value = decimalSeparator(output);
-      currentValue = output;
-    }
-  } else if (String(currentValue).endsWith("x")) {
-    output = Number(currentValue.slice(0, -1)) * Number(textBox.value.replaceAll(",", ""));
-    if (String(output).length > 12) {
-      textBox.value = "sorry too long";
-      output = currentValue = "";
-    } else {
-      if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
-      else textBox.value = decimalSeparator(output);
-      currentValue = output;
-    }
-  } else if (String(currentValue).endsWith("/")) {
-    output = Number(currentValue.slice(0, -1)) / Number(textBox.value.replaceAll(",", ""));
-    if (String(output).length > 12) {
-      textBox.value = "sorry too long";
-      output = "";
-      currentValue = "";
-    } else {
-      if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
-      else textBox.value = decimalSeparator(output);
-      currentValue = output;
-    }
+  switch (String(currentValue).slice(-1)) {
+    case "+":
+      output = Number(currentValue.slice(0, -1)) + Number(textBox.value.replaceAll(",", ""));
+      break;
+    case "_":
+      output = Number(currentValue.slice(0, -1)) - Number(textBox.value.replaceAll(",", ""));
+      break;
+    case "x":
+      output = Number(currentValue.slice(0, -1)) * Number(textBox.value.replaceAll(",", ""));
+      break;
+    case "/":
+      output = Number(currentValue.slice(0, -1)) / Number(textBox.value.replaceAll(",", ""));
+      break;
   }
+  if (lengthChecker()) return;
+  if (output < 0) textBox.value = `${decimalSeparator(Math.abs(output))}-`;
+  else textBox.value = decimalSeparator(output);
+  currentValue = output;
 });
